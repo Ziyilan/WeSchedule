@@ -26,3 +26,15 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 	}
 	
+table td {
+  width:100px;
+  height:100px;
+  text-align:center;
+  vertical-align:middle;
+  background-color:#ccc;
+  border:1px solid #fff;
+}
+
+table td.highlighted {
+  background-color:#999;
+}
