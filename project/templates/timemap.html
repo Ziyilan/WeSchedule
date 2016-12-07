@@ -36,38 +36,11 @@
         <button class="navbar-toggler hidden-md-up pull-right" type="button" data-toggle="collapse" data-target="#navbar">
             &#9776;
         </button>
-        <a class="navbar-brand" href="index.html">We Schedule</a>
-        <div class="collapse navbar-toggleable-sm pull-xs-right" id="navbar">
-            <ul class="nav navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    UserName
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Account</a>
-                        <a class="dropdown-item" href="#">Sign out</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <a class="navbar-brand" href="/">We Schedule</a>
     </nav>
 
-    <div class="col-sm-12">
-        <h2>Your Events</h2><hr>
-        <table class="table">
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="">example</a></td>
-            <td>Nov 12th - Nov 14th</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col-sm-10">
+        <div id="container"></div>
     </div>
 
 
@@ -99,24 +72,81 @@
     <!-- Bootstrap 4 JavaScript. This is for the alpha 3 release of Bootstrap 4. This should be updated when Bootstrap 4 is officially released. -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js" integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD" crossorigin="anonymous"></script>
 
-    <!-- Date Picker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <!-- Initialize Bootstrap functionality -->
     <script>
-    // Initialize tooltip component
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+        // Initialize tooltip component
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
 
-    // Initialize popover component
-    $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
+        // Initialize popover component
+        $(function () {
+          $('[data-toggle="popover"]').popover()
+        })
 
-    // Initialize datepicker
-    $('.datepicker').datepicker();
+        $(function () {
 
+            $('#container').highcharts({
+                
+                chart: {
+                    type: 'heatmap',
+                    marginTop: 40,
+                    marginBottom: 40
+                },
+
+
+                title: {
+                    text: 'Availability Map'
+                },
+
+                xAxis: {
+                    categories: ['Monday', 'Tuesday']
+                },
+
+                yAxis: {
+                    categories: ['8am', '9am', '10am', '11am', '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm'],
+                    title: null
+                },
+
+                colorAxis: {
+                    min: 0,
+                    minColor: '#FFFFFF',
+                    maxColor: Highcharts.getOptions().colors[0]
+                },
+
+                legend: {
+                    align: 'right',
+                    layout: 'vertical',
+                    margin: 0,
+                    verticalAlign: 'top',
+                    y: 25,
+                    symbolHeight: 320
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return this.point.value + 'people can make it at ' + this.series.yAxis.categories[this.point.y] + ' on ' + this.series.xAxis.categories[this.point.x];
+                    }
+                },
+
+                series: [{
+                    name: 'Sales per employee',
+                    borderWidth: 1,
+                    data: [[0,0,10],[0,1,19],[0,2,2],[0,3,23],[0,4,0],[0,5,12],[1,0,1],[1,1,9],[1,2,10],[1,3,13],[1,4,10],[1,5,19]],
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        style: {
+                            textShadow: 'none'
+                        }
+                    }
+                }]
+            });
+        });
 
     </script>
 

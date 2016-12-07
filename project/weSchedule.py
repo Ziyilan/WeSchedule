@@ -4,7 +4,7 @@
 '''WeSchedule'''
 #This is the file that links the html form to the data
 import os, sys, datetime
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import weSchedule_data
 from datetime import datetime, timedelta
 
@@ -14,8 +14,46 @@ app.secret_key = 'rosebud'
 
 
 @app.route('/')
-def homePage():
-    return render_template('index.html')
+def index():
+    return render_template('home.html')
+
+@app.route('/login/', methods = ['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        res = weSchedule_data.login(request.form['user-name'],request.form['user-password'])
+        if res == -1:
+            return render_template('login.html', msg = 'Username not found in database')
+        elif res == -2:
+            return render_template('login.html', msg = 'Wrong password')
+        else:
+            session['username'] = res['username']
+            session['UID'] = res["UID"]
+            return redirect(url_for('dashboard'))
+    return render_template('login.html')
+
+@app.route('/logout/')
+def logout():
+   # remove the username from the session if it is there
+   session.pop('username', None)
+   session.pop('UID', None)
+   return redirect(url_for('index'))
+
+@app.route('/register/', methods = ['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        res = weSchedule_data.register(request.form['user-name'],request.form['user-password'])
+        if res == -1:
+            return render_template('register.html', msg = 'The username is taken. Please choose a different one.')
+        return redirect(url_for('index'))
+    return render_template('register.html')
+
+@app.route('/dashboard/', methods = ['GET', 'POST'])
+def dashboard():
+    if 'username' in session:
+        username = session['username']
+        return render_template('account.html', UserName = username)
+    else:
+        return redirect(url_for('index'))
 
 @app.route('/createEvent/', methods = ['GET', 'POST'])
 def createEvent():
@@ -72,3 +110,4 @@ if __name__ == '__main__':
     print('Running on port ' + str(port))
     app.run('0.0.0.0', port)
 
+    

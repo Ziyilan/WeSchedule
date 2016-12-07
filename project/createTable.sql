@@ -5,12 +5,13 @@
 
 #This SQL file creates the different tables we will need for the project
 
-USE kkung_db;
+USE zlan_db;
 
 #drop tables if already exists
 drop table if exists availability;
 drop table if exists events;
 drop table if exists users;
+drop table if exists account;
 
 #the table 'users' depicts the people who use the site to schedule an appointment
 create table users(
@@ -46,4 +47,10 @@ create table availability(
 )
 ENGINE = InnoDB;
 
+create table account(
+       UID integer auto_increment not null primary key,
+       username varchar(50) not null,
+       password varchar(50) not null
+)
+ENGINE = InnoDB;
 

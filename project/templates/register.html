@@ -36,16 +36,17 @@
         <button class="navbar-toggler hidden-md-up pull-right" type="button" data-toggle="collapse" data-target="#navbar">
             &#9776;
         </button>
-        <a class="navbar-brand" href="index.html">We Schedule</a>
+        <a class="navbar-brand" href="/">We Schedule</a>
     </nav>
 
     <div class="col-sm-8">
-        <h2>Log in</h2><hr>
-        <form >
-            <label>Username: </label>
+        {{msg}}
+        <h2>Sign up</h2><hr>
+        <form action="/register/" method="POST">
+            <label>Your Username: </label>
             <input type="text" name="user-name" class="form-control" required><br>
             <label>Password: </label>
-            <input type="text" name="user-password" class="form-control" required><br>
+            <input type="password" name="user-password" class="form-control" required><br>
             <div class="form-group"> 
                 <button type="submit" class="btn btn-success">Submit</button>
             </div>

@@ -13,8 +13,8 @@ from dateutil.relativedelta import relativedelta
 
 #we get the connection into the database with this function
 def getConn():
-    dsn = dbconn2.read_cnf('/home/cs304/.my.cnf')
-    dsn['db'] = 'kkung_db'
+    dsn = dbconn2.read_cnf('/students/zlan/.my.cnf')
+    dsn['db'] = 'zlan_db'
     return dbconn2.connect(dsn)
 
 conn = getConn()
@@ -35,6 +35,35 @@ def insertEvent(eventName, start, end, creatorName):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)
     data = (eventName, start, end, creatorName)
     curs.execute('INSERT INTO events (event_name, startDate, endDate, UID) VALUES (%s, %s, %s, (SELECT UID FROM users WHERE user_name = %s))', data)
+
+def register(username, password):
+    if isUserExist(username) == -1:
+        return -1
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    data = (username, password)
+    curs.execute('INSERT INTO account (username, password) VALUES (%s, %s)', data)
+
+def isUserExist(username):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    data = (username,)
+    curs.execute('SELECT * from account WHERE username = %s', data)
+    user = curs.fetchone()
+    if user != None:
+        return -1
+    return 1
+
+def login(username, password):
+    curs = conn.cursor(MySQLdb.cursors.DictCursor)
+    data = (username,)
+    curs.execute('SELECT * from account WHERE username = %s', data)
+    user = curs.fetchone()
+    if user == None:
+        return -1 
+    elif user['password'] == password:
+        return user
+    else:
+        return -2
+
 
 def getEvent(eventName, organizerName):
     curs = conn.cursor(MySQLdb.cursors.DictCursor)

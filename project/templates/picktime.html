@@ -37,11 +37,40 @@
             &#9776;
         </button>
         <a class="navbar-brand" href="index.html">We Schedule</a>
+        <div class="collapse navbar-toggleable-sm pull-xs-right" id="navbar">
+            <ul class="nav navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    UserName
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Account</a>
+                        <a class="dropdown-item" href="#">Sign out</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </nav>
 
-    <div class="col-sm-8">
-        <p>Create new event? Please <a href="login.html"><button type="submit" class="btn btn-info">Sign in</button></a></p>
-        <p>New user? <a href="register.html"><button type="submit" class="btn btn-info" >Sign up</button></a> here!</p>
+    <div class="col-sm-12">
+        <h2>Select your availability</h2><hr>
+        <table cellpadding="0" cellspacing="0" id="our_table">
+          <tr>
+            <td>a</td>
+            <td>b</td>
+            <td>c</td>
+          </tr>
+          <tr>
+            <td>d</td>
+            <td>e</td>
+            <td>f</td>
+          </tr>
+          <tr>
+            <td>g</td>
+            <td>h</td>
+            <td>i</td>
+          </tr>
+        </table>
     </div>
 
 
@@ -56,8 +85,6 @@
 	  </div><!--/Right Column -->
 
 	</div><!--/container-fluid-->
-
-
 
 
     <!-- Bootstrap core JavaScript
@@ -96,6 +123,46 @@
 
 	<!-- Placeholder Images -->
 	<script src="js/holder.min.js"></script>
+
+    <!-- click and drag -->
+    <script>    
+        $(function () {
+          var isMouseDown = false,
+            isHighlighted;
+          $("#our_table td")
+            .mousedown(function () {
+              isMouseDown = true;
+              $(this).toggleClass("highlighted");
+              isHighlighted = $(this).hasClass("highlighted");
+              return false; // prevent text selection
+            })
+            .mouseover(function () {
+              if (isMouseDown) {
+                $(this).toggleClass("highlighted", isHighlighted);
+              }
+            })
+            .bind("selectstart", function () {
+              return false;
+            })
+
+          $(document)
+            .mouseup(function () {
+              isMouseDown = false;
+            });
+        });
+    </script>
+
+    <script>
+        var res = []; 
+        $("#our_table tr").each(function () {
+            $('td', this).each(function () {
+                if ($(this).hasClass("highlighted")) {
+                    res.append([$(this).parent().children().index($(this)),$(this).parent().parent().children().index($(this).parent())]);
+                }
+             })
+        })
+        console.log(res);
+    </script>
 
 </body>
 
